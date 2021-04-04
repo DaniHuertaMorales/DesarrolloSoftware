@@ -104,6 +104,30 @@ class Usuario{
 		
 		return $result;
 	}
+
+	public function eliminar(){
+		$email = $this->email;
+		$password = $this->password;
+		
+		// Comprobar si existe el usuario
+		$sql = "SELECT * FROM usuarios WHERE email = '$email'";
+		$login = $this->db->query($sql);
+		
+		
+		if($login && $login->num_rows == 1){
+			$usuario = $login->fetch_object();
+			
+			// Verificar la contraseña
+			$verify = password_verify($password, $usuario->password);
+			
+			if($verify){
+				$result = $usuario;
+				$sql = "DELETE * FROM usuarios WHERE email = '$email'"
+				$eliminar = $this->db->query($sql);
+			}
+		}
+		
+	}
 	
 	
 	
